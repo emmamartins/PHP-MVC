@@ -40,7 +40,7 @@ Class Database
     public function connectDB()
     {
 
-        if (mysqli_select_db($this->connect, $this->database)):
+        if (pg_connect($this->connect 'dbname'=$this->database)):
             return true;
         else:
             return false;
@@ -54,11 +54,10 @@ Class Database
     {
 
         try {
-            $this->connect = mysqli_connect(
-                $this->host . ':' . $this->port, $this->username, $this->password
-            );
+            
+            $this->connect = "host=$this->host, port=$this->port, user=$this->username, password=$this->password";
 
-            if (!$this->connect) {
+            if (!pg_connect($this->connect)) {
                 die("Unable to create connection!");
             }
 
@@ -73,7 +72,7 @@ Class Database
     {
 
 
-        $result = mysqli_query($this->connect, $sql);
+        $result = pg_query($this->connect, $sql);
 
 
         return $result;
@@ -83,10 +82,10 @@ Class Database
     {
 
 
-        $result = mysqli_query($this->connect, $sql);
+        $result = pg_query($this->connect, $sql);
         if ($result) {
             $data = array();
-            while ($row = mysqli_fetch_assoc($result)) {
+            while ($row = pg_fetch_all($result)) {
                 $data[] = $row;
             }
             return $data;

@@ -40,7 +40,7 @@ Class Database
     public function connectDB()
     {
 
-        if (mysqli_select_db($this->connect, $this->database)):
+        if (oci_connect($this->connect, $this->database)):
             return true;
         else:
             return false;
@@ -54,11 +54,8 @@ Class Database
     {
 
         try {
-            $this->connect = mysqli_connect(
-                $this->host . ':' . $this->port, $this->username, $this->password
-            );
-
-            if (!$this->connect) {
+            $this->connect = " $this->host, $this->port, $this->username, $this->password"
+            if (!oci_connect()) {
                 die("Unable to create connection!");
             }
 
